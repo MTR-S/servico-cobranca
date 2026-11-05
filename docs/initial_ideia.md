@@ -40,10 +40,10 @@ Automatizar o processo de auditoria e conciliação financeira semanal entre um 
 
 ### 5. Formato de Saída (Output Esperado)
 
-Após a análise e cálculo, o sistema/automação deverá gerar e enviar no grupo de WhatsApp uma mensagem seguindo estritamente a estrutura abaixo (exemplo com base em um valor bruto de R\$ 2.552,20):
+Após a análise e cálculo, o sistema/automação deverá gerar e enviar no grupo de WhatsApp uma mensagem seguindo a estrutura abaixo (exemplo com base em um valor bruto de R\$ 2.552,20):
 
-> * tipo valor bruto = 2552,20
+> * Valor Bruto  = R\$2.552,20
 >
-> * comissão 5% = 127,61
+> * Comissão (5%) = R\$127,61
 >
-> * valor a pagar= 2552,20-127,61=2.424,59
+> * Valor a Pagar = R\$2.552,20 - R\$127,61 = R\$2.424,59
