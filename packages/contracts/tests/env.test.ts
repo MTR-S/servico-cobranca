@@ -184,5 +184,10 @@ describe('Environment Variables Loading and Validation', () => {
       expect(gitignore).toContain('data/');
       expect(gitignore).toContain('whatsapp-session/');
     });
+
+    it('loadEnv loads configuration safely when custom path is provided', () => {
+      const result = loadEnv({ path: path.resolve(__dirname, 'non-existent.env') });
+      expect(result).toBeDefined();
+    });
   });
 });

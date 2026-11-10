@@ -1,22 +1,7 @@
 import { z } from 'zod';
-import {
-  WeeklyClosingReportSchema,
-  WeeklyClosingReportMessage,
-  TerminalClosingDetailSchema,
-  TerminalClosingDetail
-} from './weekly-closing-report';
-import {
-  GroupNoticeSchema,
-  GroupNoticeMessage,
-  GroupNoticeTypeSchema,
-  GroupNoticeType
-} from './group-notice';
-import {
-  AdminTechnicalAlertSchema,
-  AdminTechnicalAlertMessage,
-  AdminAlertTypeSchema,
-  AdminAlertType
-} from './admin-technical-alert';
+import { WeeklyClosingReportSchema } from './weekly-closing-report';
+import { GroupNoticeSchema } from './group-notice';
+import { AdminTechnicalAlertSchema } from './admin-technical-alert';
 
 export * from './weekly-closing-report';
 export * from './group-notice';
@@ -34,6 +19,8 @@ export function parseWhatsappOutboundMessage(data: unknown): WhatsappOutboundMes
   return WhatsappOutboundMessageSchema.parse(data);
 }
 
-export function safeParseWhatsappOutboundMessage(data: unknown) {
+export function safeParseWhatsappOutboundMessage(
+  data: unknown
+): z.SafeParseReturnType<unknown, WhatsappOutboundMessage> {
   return WhatsappOutboundMessageSchema.safeParse(data);
 }

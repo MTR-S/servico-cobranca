@@ -5,6 +5,7 @@ import {
   ImportFallbackReportSchema,
   ClosingCommandSchema,
   parseClosingCommand,
+  safeParseClosingCommand,
   QUEUES
 } from '../src';
 
@@ -140,6 +141,25 @@ describe('closing.commands Contracts', () => {
     it('fails when payload is not an object', () => {
       expect(() => parseClosingCommand(null)).toThrow();
       expect(() => parseClosingCommand('not an object')).toThrow();
+    });
+
+    it('safely parses valid and invalid closing commands with safeParseClosingCommand', () => {
+      const valid = {
+        id: 'a1b2c3d4-e5f6-7a8b-9c0d-1e2f3a4b5c6d',
+        type: 'REQUEST_WEEKLY_CLOSING',
+        timestamp: '2026-11-14T20:30:00.000Z',
+        groupId: '120363021234567890@g.us',
+        senderId: '5511999999999',
+        source: 'MANUAL_WHATSAPP'
+      };
+      const result = safeParseClosingCommand(valid);
+      expect(result.success).toBe(true);
+      if (result.success) {
+        expect(result.data.type).toBe('REQUEST_WEEKLY_CLOSING');
+      }
+
+      const invalidResult = safeParseClosingCommand({ type: 'INVALID' });
+      expect(invalidResult.success).toBe(false);
     });
   });
 });

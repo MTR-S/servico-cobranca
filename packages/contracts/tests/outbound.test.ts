@@ -5,6 +5,7 @@ import {
   AdminTechnicalAlertSchema,
   WhatsappOutboundMessageSchema,
   parseWhatsappOutboundMessage,
+  safeParseWhatsappOutboundMessage,
   QUEUES
 } from '../src';
 
@@ -153,6 +154,25 @@ describe('whatsapp.outbound Contracts', () => {
         timestamp: '2026-11-14T20:30:00.000Z'
       };
       expect(() => parseWhatsappOutboundMessage(unknown)).toThrow();
+    });
+
+    it('safely parses valid and invalid outbound messages with safeParseWhatsappOutboundMessage', () => {
+      const valid = {
+        id: 'e5f6a7b8-c9d0-1e2f-3a4b-5c6d7e8f9a0b',
+        type: 'GROUP_NOTICE',
+        timestamp: '2026-11-10T14:00:00.000Z',
+        recipient: '120363021234567890@g.us',
+        noticeType: 'OUTSIDE_SATURDAY_REJECTED',
+        message: 'O Fechamento Semanal padrão só pode ser solicitado aos sábados.'
+      };
+      const result = safeParseWhatsappOutboundMessage(valid);
+      expect(result.success).toBe(true);
+      if (result.success) {
+        expect(result.data.type).toBe('GROUP_NOTICE');
+      }
+
+      const invalidResult = safeParseWhatsappOutboundMessage({ type: 'INVALID' });
+      expect(invalidResult.success).toBe(false);
     });
   });
 });

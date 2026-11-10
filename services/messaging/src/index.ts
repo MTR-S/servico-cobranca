@@ -4,7 +4,7 @@ export function initializeMessagingConfig(customEnv?: Record<string, unknown>): 
   if (!customEnv) {
     loadEnv();
   }
-  return validateMessagingEnv(customEnv);
+  return validateMessagingEnv(customEnv ?? process.env);
 }
 
 export * from '@servico-cobranca/contracts';

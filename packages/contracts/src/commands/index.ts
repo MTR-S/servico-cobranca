@@ -1,7 +1,7 @@
 import { z } from 'zod';
-import { RequestWeeklyClosingSchema, RequestWeeklyClosingCommand } from './request-weekly-closing';
-import { ForceWeeklyClosingSchema, ForceWeeklyClosingCommand } from './force-weekly-closing';
-import { ImportFallbackReportSchema, ImportFallbackReportCommand } from './import-fallback-report';
+import { RequestWeeklyClosingSchema } from './request-weekly-closing';
+import { ForceWeeklyClosingSchema } from './force-weekly-closing';
+import { ImportFallbackReportSchema } from './import-fallback-report';
 
 export * from './request-weekly-closing';
 export * from './force-weekly-closing';
@@ -19,6 +19,8 @@ export function parseClosingCommand(data: unknown): ClosingCommand {
   return ClosingCommandSchema.parse(data);
 }
 
-export function safeParseClosingCommand(data: unknown) {
+export function safeParseClosingCommand(
+  data: unknown
+): z.SafeParseReturnType<unknown, ClosingCommand> {
   return ClosingCommandSchema.safeParse(data);
 }

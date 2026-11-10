@@ -8,7 +8,7 @@ export interface LoadEnvOptions {
 }
 
 export function loadEnv(options: LoadEnvOptions = {}): dotenv.DotenvConfigOutput {
-  const envPath = options.path || path.resolve(process.cwd(), '.env');
+  const envPath = options.path ?? path.resolve(process.cwd(), '.env');
   if (fs.existsSync(envPath)) {
     return dotenv.config({ path: envPath, override: options.override });
   }

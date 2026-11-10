@@ -4,7 +4,7 @@ export function initializeCoreConfig(customEnv?: Record<string, unknown>): CoreE
   if (!customEnv) {
     loadEnv();
   }
-  return validateCoreEnv(customEnv);
+  return validateCoreEnv(customEnv ?? process.env);
 }
 
 export * from '@servico-cobranca/contracts';
