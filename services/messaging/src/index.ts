@@ -7,4 +7,7 @@ export function initializeMessagingConfig(customEnv?: Record<string, unknown>): 
   return validateMessagingEnv(customEnv ?? process.env);
 }
 
+export * from './types';
+export * from './messaging-bridge';
 export * from '@servico-cobranca/contracts';
+
