@@ -1,0 +1,86 @@
+version: '3.8'
+
+# ==============================================================================
+# Orquestração Docker Compose: Serviço de Cobrança e Fechamento Semanal
+# ==============================================================================
+# Serviços orquestrados:
+# 1. rabbitmq: Broker AMQP com interface de gerenciamento e healthcheck ativo.
+# 2. core: Lógica de negócio, scraping Getnet com Playwright e banco SQLite.
+# 3. messaging: Adaptador WebSocket do WhatsApp (Baileys).
+# ==============================================================================
+
+services:
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    container_name: servico-cobranca-rabbitmq
+    restart: unless-stopped
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      - RABBITMQ_DEFAULT_USER=guest
+      - RABBITMQ_DEFAULT_PASS=guest
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "-q", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 15s
+    networks:
+      - cobranca-network
+
+  core:
+    build:
+      context: .
+      dockerfile: services/core/Dockerfile
+    container_name: servico-cobranca-core
+    restart: unless-stopped
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+    env_file:
+      - .env
+    environment:
+      - NODE_ENV=production
+      - RABBITMQ_URL=amqp://guest:guest@rabbitmq:5672
+      - SQLITE_DB_PATH=/app/data/sqlite.db
+      - PLAYWRIGHT_USER_DATA_DIR=/app/data/browser-profile
+      - IMPORTS_DIR=/app/data/imports
+      - SCREENSHOTS_DIR=/app/data/screenshots
+    volumes:
+      - ./data:/app/data
+      - ./data/browser-profile:/app/data/browser-profile
+      - ./data/imports:/app/data/imports
+      - ./data/screenshots:/app/data/screenshots
+    networks:
+      - cobranca-network
+
+  messaging:
+    build:
+      context: .
+      dockerfile: services/messaging/Dockerfile
+    container_name: servico-cobranca-messaging
+    restart: unless-stopped
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+    env_file:
+      - .env
+    environment:
+      - NODE_ENV=production
+      - RABBITMQ_URL=amqp://guest:guest@rabbitmq:5672
+      - WHATSAPP_SESSION_PATH=/app/data/whatsapp-session
+    volumes:
+      - ./data/whatsapp-session:/app/data/whatsapp-session
+    networks:
+      - cobranca-network
+
+volumes:
+  rabbitmq_data:
+    driver: local
+
+networks:
+  cobranca-network:
+    driver: bridge
