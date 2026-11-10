@@ -37,6 +37,10 @@ imports/
 .DS_Store
 Thumbs.db
 
+# Agent & harness files
+.sandcastle/
+skills/
+
 # Logs
 *.log
 npm-debug.log*

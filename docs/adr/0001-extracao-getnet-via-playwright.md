@@ -1,0 +1,3 @@
+# Extração de Vendas da Getnet via Playwright no Portal Minha Conta
+
+O Fechamento Semanal ocorre aos sábados (por acionamento manual do Comerciante ou agendamento às 23:59) e exige a apuração imediata das transações de Cartão (crédito/débito) e PIX realizadas no próprio sábado, filtradas pelos Números de Terminal físicos (POS). Como as APIs REST públicas da Getnet atendem apenas e-commerce e o Extrato Eletrônico (EDI) de terminais físicos só é disponibilizado em lote no dia seguinte (D+1), decidimos extrair os dados automatizando a navegação no portal web `minhaconta.getnet.com.br` com Playwright no Serviço Core, mantendo a importação de relatório CSV/Excel exportado do portal como fallback operacional.

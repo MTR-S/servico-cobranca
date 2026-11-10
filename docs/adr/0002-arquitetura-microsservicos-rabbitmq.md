@@ -1,0 +1,3 @@
+# Arquitetura de Microsserviços Event-Driven com RabbitMQ
+
+Separamos o sistema em dois microsserviços independentes orquestrados via Docker Compose (`services/core` para regras de domínio, agendamento, persistência em SQLite e scraping da Getnet com Playwright; `services/messaging` exclusivamente para a conexão WebSocket com o WhatsApp via Baileys), comunicando-se de forma assíncrona por filas duráveis no RabbitMQ (`closing.commands` e `whatsapp.outbound`). Essa separação isola as dependências pesadas e eventuais falhas de navegador do Playwright da sessão persistente do WhatsApp, impede que o domínio financeiro dependa do ecossistema de mensageria e garante que nenhum relatório de fechamento seja perdido caso o adaptador do WhatsApp esteja reconectando.
