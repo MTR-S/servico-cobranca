@@ -1,0 +1,21 @@
+{
+  "name": "servico-cobranca",
+  "version": "1.0.0",
+  "description": "Automação de Fechamento Semanal e Apuração de Repasse (Getnet + WhatsApp)",
+  "private": true,
+  "workspaces": [
+    "packages/*",
+    "services/*"
+  ],
+  "scripts": {
+    "build": "npm run build --workspaces --if-present",
+    "typecheck": "npm run typecheck --workspaces --if-present",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.10",
+    "typescript": "^5.5.3",
+    "vitest": "^1.6.0"
+  }
+}
